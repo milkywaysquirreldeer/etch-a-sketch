@@ -1,4 +1,4 @@
-.doodling-surface {
+.etching-surface {
   border: 5px solid grey;
   display: flex;
   flex-wrap: wrap;
@@ -7,9 +7,13 @@
   width: 80vh;
 }
 
-.ink-square {
-  border: 1px solid grey;
+.surface-unit {
+  background-color: #e0dfdd;
   box-sizing: border-box;
   height: 5vh;
   width: 5vh;
+}
+
+.etched {
+  background-color: #595957;
 }
