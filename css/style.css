@@ -1,19 +1,19 @@
 .etching-surface {
-  border: 5px solid grey;
+  border: 1vh solid #eb0e0e;
   display: flex;
   flex-wrap: wrap;
-  height: 80vh;
-  margin: 10vh auto;
-  width: 80vh;
+  height: 70vh;
+  margin: 14vh auto;
+  width: 70vh;
 }
 
 .surface-unit {
   background-color: #e0dfdd;
+  border: 1px solid #cfcfcf;
   box-sizing: border-box;
-  height: 5vh;
-  width: 5vh;
 }
 
 .etched {
   background-color: #595957;
+  border: 1px solid #595957; 
 }
