@@ -1,19 +1,34 @@
-.etching-surface {
+* {
+  box-sizing: border-box;
+}
+
+.header {
+ display: flex;
+  gap: 6vh;
+  height: 12vh;
+  justify-content: center;
+}
+
+.button,
+.current-grid-size-display {
+  border: 1px solid black;
+}
+
+.etching-grid-surface {
   border: 1vh solid #eb0e0e;
+  box-sizing: content-box;
   display: flex;
   flex-wrap: wrap;
   height: 70vh;
-  margin: 14vh auto;
+  margin: 7vh auto;
   width: 70vh;
 }
 
-.surface-unit {
+.grid-pixel {
   background-color: #e0dfdd;
-  border: 1px solid #cfcfcf;
-  box-sizing: border-box;
+  border: 1px solid #595957;
 }
 
 .etched {
   background-color: #595957;
-  border: 1px solid #595957; 
 }
