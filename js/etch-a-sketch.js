@@ -28,21 +28,30 @@ generateGridPixels(defaultPixelsPerSide);
 const displayGridDimensions = function() {
   const totalPixels = (currentPixelsPerSide ** 2);
   document.querySelector('.grid-info-dynamic').textContent =
-   `${totalPixels} (${currentPixelsPerSide} x ${currentPixelsPerSide})`;
+   `${totalPixels} squares (${currentPixelsPerSide}x${currentPixelsPerSide})`;
 };
 
 displayGridDimensions();
 
 /* Button functionality for user-defined grid size */
 const changeGridDimensions = function () {
-  const userPixelsPerSide = prompt(`Change grid size? There are currently
-   ${currentPixelsPerSide} drawing pixels per side (higher values will take
+  const userPixelsPerSide = prompt(`Change grid resolution? There are currently
+   ${currentPixelsPerSide} drawing squares per side (higher values will take
    longer to load). Valid range is 2 - 30.`,
    currentPixelsPerSide);
   currentPixelsPerSide = userPixelsPerSide;
   generateGridPixels(currentPixelsPerSide);
   displayGridDimensions();
 };
+
+const defaultMode = 'Classic';
+let currentMode = defaultMode;
+
+const displayMode = function() {
+  document.querySelector('.mode-info-dynamic').textContent = currentMode;
+}
+
+displayMode();
 
 document.querySelector('.change-grid-size-button').addEventListener('click',
  changeGridDimensions);
