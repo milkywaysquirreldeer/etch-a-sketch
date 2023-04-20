@@ -2,14 +2,14 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8">
-    <title>Etching / Sketching Surface</title>
+    <title>JavaScript Etch-a-Sketch</title>
     <link rel="stylesheet" href="css/style.css">
   </head>
   <body>
     <script src="js/etch-a-sketch.js" defer></script>
     <div class="header">Digital Etch-a-Sketch</div>
     <div class="main">
-      <div class="side-panel">
+      <div class="side-panel left-panel">
         <div class="side-container instructions">
           <p><strong>How to use:</strong></p>
           <p>Hover your mouse over the squares in the grid to draw along a continuous path, much like a classic Etch-a-Sketch.</p>
@@ -24,20 +24,20 @@
         </div>
       </div>
     <div class="etching-grid-surface"></div>
-    <div class="side-panel">
-      <div class="side-container current-settings"><u><strong><p>Current Settings</p></strong></u>:
+    <div class="side-panel right-panel">
+      <div class="side-container current-settings"><u>Current settings</u>:
         <div class="current-grid-size-display"></div>
-        <div class="info info-static grid-info-static">Grid resolution</div>
+        <div class="info info-static grid-info-static">Grid resolution is</div>
         <div class="info info-dynamic grid-info-dynamic"></div>
-        <div class="info info-static mode-info-static">Drawing mode</div>
+        <div class="info info-static mode-info-static">Drawing mode is</div>
         <div class="info info-dynamic mode-info-dynamic"></div>
       </div>
       <div class="side-container buttons-container">
         <button class="erase-grid-button">Erase sketch</button>
         <button class="change-grid-size-button">Change grid resolution</button>
-        <button class="classic-mode-button footer-button">Classic mode</button>
-        <button class="rainbow-mode-button footer-button">Rainbow mode</button>
-        <button class="airbrush-mode-button footer-button">Airbrush mode</button>
+        <button class="classic-mode-button">Classic mode</button>
+        <button class="rainbow-mode-button">Rainbow mode</button>
+        <button class="airbrush-mode-button">Airbrush mode</button>
       </div>
     </div>
   </body>

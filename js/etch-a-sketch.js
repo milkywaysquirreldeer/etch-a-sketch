@@ -25,7 +25,7 @@ const defaultPixelsPerSide = 15;
 let currentPixelsPerSide = defaultPixelsPerSide;
 
 /* Dynamically wipes existing "pixels" and refills the etching surface with new
-  ones, using a pixel count defined by user */
+  ones, based on a pixel count provided by the user */
 const generateGridPixels = function(pixelCountPerSide) {
   document.querySelectorAll('.grid-pixel').forEach(pixel => pixel.remove());
   const gridSurfaceVhPercent = 70;
@@ -50,6 +50,8 @@ document.querySelector(`.${m}-mode-button`).addEventListener('click',
  displayMode);
 document.querySelector(`.${m}-mode-button`).addEventListener('click',
  () => generateGridPixels(currentPixelsPerSide));
+document.querySelector(`.${m}-mode-button`).addEventListener('click',
+ () => alert(`Switching to ${m} mode; the grid will now refresh.`));
 }
 
 generateGridPixels(defaultPixelsPerSide);
@@ -57,20 +59,35 @@ generateGridPixels(defaultPixelsPerSide);
 const displayGridDimensions = function() {
   const totalPixels = (currentPixelsPerSide ** 2);
   document.querySelector('.grid-info-dynamic').textContent =
-   `${totalPixels} squares (${currentPixelsPerSide}x${currentPixelsPerSide})`;
+   `${currentPixelsPerSide}x${currentPixelsPerSide} (${totalPixels})`;
 };
 
 displayGridDimensions();
 
 /* Button functionality for user-defined grid size */
 const changeGridDimensions = function () {
-  const userPixelsPerSide = prompt(`Change grid resolution? There are currently
-   ${currentPixelsPerSide} drawing squares per side (higher values will take
-   longer to load). Valid range is 2 - 30.`,
-   currentPixelsPerSide);
-  currentPixelsPerSide = userPixelsPerSide;
-  generateGridPixels(currentPixelsPerSide);
-  displayGridDimensions();
+  const expectedValues = [];
+  for (let i = 2; i <= 30; i++) {
+    expectedValues.push(i);
+  }
+  let userPixelsPerSide = parseFloat(prompt(`Change the grid resolution? ` +
+   `There are currently ${currentPixelsPerSide} drawing squares per side ` +
+    `(higher values will take longer to load). Valid range is 2 - 30.`,
+     currentPixelsPerSide));
+  switch(true) {
+    case (userPixelsPerSide == null) : return;
+    case (!expectedValues.includes(userPixelsPerSide)) : {
+      alert('Expected values are whole numbers from 2 to 30.');
+      break;
+    }
+    case (userPixelsPerSide >= 25) : alert(`This would be one of those`
+    + ` higher values that can take longer to load! Refreshing the grid.`)
+    default : {
+      currentPixelsPerSide = userPixelsPerSide;
+      generateGridPixels(currentPixelsPerSide);
+      displayGridDimensions();
+    }
+  }
 };
 
 document.querySelector('.change-grid-size-button').addEventListener('click',

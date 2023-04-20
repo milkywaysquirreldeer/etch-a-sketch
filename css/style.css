@@ -3,19 +3,20 @@
 }
 
 body {
+  color: #1e232b;
   font-family: Arial, Helvetica, sans-serif;
   margin: 0px;
   text-align: center;
 }
 
 ul {
-  padding-left: 0px;
+  padding-left: 15px;
 }
 
 .header {
-/*background-color: #eb0e0e;*/
-  background-color: #b13d3d;
-  color: #e2b338;
+  background-color:#feffff;
+  border-bottom: 1px solid #718f03;
+  color:#5a7ca3;
   font-size: 4vh;
   font-weight: bold;
   height: 10vh;
@@ -31,17 +32,45 @@ ul {
 }
 
 .side-panel {
-  background-color: white;
+  background-color: #f5f8f7;
   width: 20vw;
+}
+
+.left-panel {
+  border-right: 1px solid #595957;
+}
+
+.right-panel {
+  border-left: 1px solid #595957;
 }
 
 .side-container {
   margin: 7vh 2vw;
-  font-size: 16px;
+  font-size: 18px;
+}
+
+.current-settings {
+  background-color: #bada17;
+  border: 2px solid #598400;
+  font-family: 'Courier New', Courier, monospace;
+  font-weight: bold;
 }
 
 .instructions {
+  background-color: #feffff;
+  border: 1px dashed #587ba3;
+}
+
+.instructions {
+  margin: 7vh 1vw;
+  padding: 1vw;
   text-align: left;
+}
+
+.instructions:hover {
+  box-shadow: 6px 6px 5px#587ba3;
+  color:black;
+  transform: scale(1.07, 1.07);
 }
 
 .info-dynamic {
@@ -55,9 +84,28 @@ ul {
 }
 
 button {
+  background-color: #ececec;
+  border: 1px solid;
+  cursor: pointer;
   font-size: 14px;
   font-weight: bold;
   padding: 3vh 0vw;
+}
+
+button:hover {
+  box-shadow: 6px 6px 5px #404a5b;
+}
+
+button:active {
+  background-color: #a1bed5;
+}
+
+.classic-mode-button {
+  border: 1px solid #eb0e0e;
+}
+
+.rainbow-mode-button {
+  border: 1px solid blue;
 }
 
 .etching-grid-surface {
