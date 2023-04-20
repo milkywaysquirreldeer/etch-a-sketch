@@ -13,9 +13,11 @@ ul {
 }
 
 .header {
-  background-color: #eb0e0e;
+/*background-color: #eb0e0e;*/
+  background-color: #b13d3d;
   color: #e2b338;
   font-size: 4vh;
+  font-weight: bold;
   height: 10vh;
   padding: 2vh 0vh;
 }
@@ -76,4 +78,72 @@ button {
 
 .etched {
   background-color: #595957;
+}
+
+.rainbow-etched-0 {
+  background-color: red;
+}
+
+.rainbow-etched-1 {
+  background-color: orange;
+}
+
+.rainbow-etched-2 {
+  background-color: yellow;
+}
+
+.rainbow-etched-3 {
+  background-color: green;
+}
+
+.rainbow-etched-4 {
+  background-color: blue;
+}
+
+.rainbow-etched-5 {
+  background-color: indigo;
+}
+
+.airbrushed-pass-1 {
+  background-color: white;
+}
+
+.airbrushed-pass-0 {
+  background-color: #999999;
+}
+
+.airbrushed-pass-1 {
+  background-color: #888888;
+}
+
+.airbrushed-pass-2 {
+  background-color: #777777;
+}
+
+.airbrushed-pass-3 {
+  background-color: #666666;
+}
+
+.airbrushed-pass-4 {
+  background-color: #555555;
+}
+
+.airbrushed-pass-5 {
+  background-color: #444444;
+}
+
+.airbrushed-pass-6 {
+  background-color: #333333;
+}
+
+.airbrushed-pass-7 {
+  background-color: #222222;
+}
+
+.airbrushed-pass-8 {
+  background-color: #111111;
+}
+
+.airbrushed-pass-9 {
+  background-color: #000000;
 }
