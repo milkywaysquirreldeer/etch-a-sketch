@@ -49,6 +49,30 @@ const generateGridPixels = function(pixelCountPerSide) {
 
 const modes = ['classic', 'rainbow', 'airbrush'];
 
+const setGridFrameColor = function() {
+  const gridFrame = document.querySelector('.etching-grid-surface');
+  const clearGridFrame = function() {
+    for (const m of modes) {
+      gridFrame.classList.remove(`${m}-mode-grid-frame`)
+    }
+  }
+  switch(currentMode) {
+    case 'classic':
+      clearGridFrame();
+      gridFrame.classList.add('classic-mode-grid-frame');
+      break;
+    case 'rainbow':
+      clearGridFrame();
+      gridFrame.classList.add('rainbow-mode-grid-frame');
+      break;
+    case 'airbrush':
+      clearGridFrame();
+      gridFrame.classList.add('airbrush-mode-grid-frame');
+  }
+}
+
+setGridFrameColor();
+
 // Set up the mode buttons' functionality
 for (const m of modes) {
   document.querySelector(`.${m}-mode-button`).addEventListener('click',
@@ -59,6 +83,8 @@ for (const m of modes) {
    () => generateGridPixels(currentPixelsPerSide));
   document.querySelector(`.${m}-mode-button`).addEventListener('click',
    () => alert(`Switching to ${m} mode; the grid will now refresh.`));
+  document.querySelector(`.${m}-mode-button`).addEventListener('click',
+   setGridFrameColor);
 }
 
 generateGridPixels(defaultPixelsPerSide);

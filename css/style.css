@@ -26,7 +26,6 @@ ul {
 .main {
   background-color: #a1bed5;
   background-image: url("../img/pexels-photomix-company-97888.jpg");
-  /*background-position: center;*/
   display: flex;
   height: 90vh;
 }
@@ -59,9 +58,6 @@ ul {
 .instructions {
   background-color: #feffff;
   border: 1px dashed #587ba3;
-}
-
-.instructions {
   margin: 7vh 1vw;
   padding: 1vw;
   text-align: left;
@@ -85,7 +81,7 @@ ul {
 
 button {
   background-color: #ececec;
-  border: 1px solid;
+  border: 2px solid #4d7201;
   cursor: pointer;
   font-size: 14px;
   font-weight: bold;
@@ -101,15 +97,30 @@ button:active {
 }
 
 .classic-mode-button {
-  border: 1px solid #eb0e0e;
+  border: 2px solid #eb0e0e;
+}
+
+.classic-mode-grid-frame {
+  border: 1vh solid #eb0e0e;
 }
 
 .rainbow-mode-button {
-  border: 1px solid blue;
+  border: 2px solid blue;
+}
+
+.rainbow-mode-grid-frame {
+  border: 1vh solid blue;
+}
+
+.airbrush-mode-button {
+  border: 2px solid black;
+}
+
+.airbrush-mode-grid-frame {
+  border: 1vh solid black;
 }
 
 .etching-grid-surface {
-  border: 1vh solid #eb0e0e;
   box-sizing: content-box;
   display: flex;
   flex-shrink: 0;
