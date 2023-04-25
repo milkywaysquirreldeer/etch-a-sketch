@@ -2,15 +2,52 @@ const defaultMode = 'classic';
 let currentMode = defaultMode;
 
 const displayMode = function() {
-  const currentModeCapitalized = currentMode.charAt(0).toUpperCase() + 
-   currentMode.slice(1);
   document.querySelector('.mode-info-dynamic').textContent =
-   currentModeCapitalized;
-}
+   currentMode.toUpperCase();
+};
 
 displayMode();
 
-// Makes all "pixels" responsive to mouse hover to enable etching functionality
+let colorCode = 0; //rainbow mode color counter
+
+/* Colorizes individual pixels to simulate drawing/etching. Cycles through
+ background colors on each new hover event to provide an overall rainbow
+ effect*/
+const rainbowEtch = function() {
+  switch (colorCode) {
+    case 0 : this.classList.add(`${pixelMode.rainbowed}0`); //red
+    break;
+    case 1 : this.classList.add(`${pixelMode.rainbowed}1`); //orange
+    break;
+    case 2 : this.classList.add(`${pixelMode.rainbowed}2`); //yellow
+    break;
+    case 3 : this.classList.add(`${pixelMode.rainbowed}3`); //green
+    break;
+    case 4 : this.classList.add(`${pixelMode.rainbowed}4`); //blue
+    break;
+    case 5 : this.classList.add(`${pixelMode.rainbowed}5`); //indigo
+  }
+  colorCode ++;
+  if (colorCode > 5) colorCode = 0;
+};
+
+/* Colorizes individual pixels to simulate drawing/etching. Adds a darker 
+ background color on each successive hover event to provide an airbrushed/spray 
+ paint effect*/
+const airbrushEtch = function() {
+  const darkest = 9;
+  const lightest = 0;
+  if (!this.classList.contains(`${pixelMode.airbrushed}${lightest}`)) {
+    this.classList.add(`${pixelMode.airbrushed}${lightest}`);
+  } else {
+    for (let i = (darkest - 1); i >= lightest; i--) {
+      if (this.classList.contains(`${pixelMode.airbrushed}${i}`)) {
+        this.classList.add(`${pixelMode.airbrushed}${i + 1}`);
+      }
+    }
+  }
+};
+
 const enableGridPixels = function () {
   switch(currentMode) {
     case 'classic':
@@ -26,13 +63,9 @@ const enableGridPixels = function () {
       document.querySelectorAll('.grid-pixel').forEach(pixel =>
        pixel.addEventListener('mouseover', airbrushEtch));
   }
-}
+};
 
-const defaultPixelsPerSide = 15;
-let currentPixelsPerSide = defaultPixelsPerSide;
-
-/* Dynamically wipes existing "pixels" and refills the etching surface with new
-  ones, based on a pixel count provided by the user */
+/* Wipe current board and redraw pixels to user-specified dimensions */
 const generateGridPixels = function(pixelCountPerSide) {
   document.querySelectorAll('.grid-pixel').forEach(pixel => pixel.remove());
   const gridSurfaceVhPercent = 70;
@@ -59,21 +92,24 @@ const setGridFrameColor = function() {
   switch(currentMode) {
     case 'classic':
       clearGridFrame();
-      gridFrame.classList.add('classic-mode-grid-frame');
+      gridFrame.classList.add('classic-mode-grid-frame'); //red frame
       break;
     case 'rainbow':
       clearGridFrame();
-      gridFrame.classList.add('rainbow-mode-grid-frame');
+      gridFrame.classList.add('rainbow-mode-grid-frame'); //blue frame
       break;
     case 'airbrush':
       clearGridFrame();
-      gridFrame.classList.add('airbrush-mode-grid-frame');
+      gridFrame.classList.add('airbrush-mode-grid-frame'); //black frame
   }
-}
+};
 
 setGridFrameColor();
 
-// Set up the mode buttons' functionality
+const defaultPixelsPerSide = 15;
+let currentPixelsPerSide = defaultPixelsPerSide;
+
+/* Set up the mode buttons' functionality */
 for (const m of modes) {
   document.querySelector(`.${m}-mode-button`).addEventListener('click',
    () => currentMode = `${m}`);
@@ -85,7 +121,7 @@ for (const m of modes) {
    () => alert(`Switching to ${m} mode; the grid will now refresh.`));
   document.querySelector(`.${m}-mode-button`).addEventListener('click',
    setGridFrameColor);
-}
+};
 
 generateGridPixels(defaultPixelsPerSide);
 
@@ -97,7 +133,7 @@ const displayGridDimensions = function() {
 
 displayGridDimensions();
 
-/* Provides button functionality for user-defined grid size */
+/* Set up the "Change grid resolution" button's functionality */
 const changeGridDimensions = function () {
   const minExpected = 2;
   const maxExpected = 30;
@@ -105,7 +141,7 @@ const changeGridDimensions = function () {
   for (let i = minExpected; i <= maxExpected; i++) {
     expectedValues.push(i);
   }
-  let userPixelsPerSide = parseFloat(prompt(`Change the grid resolution? ` +
+  const userPixelsPerSide = parseFloat(prompt(`Change the grid resolution? ` +
    `There are currently ${currentPixelsPerSide} drawing squares per side ` +
    `(higher values will take longer to load). Valid range is ${minExpected}` +
    `- ${maxExpected}.`, currentPixelsPerSide));
@@ -129,68 +165,33 @@ const changeGridDimensions = function () {
 document.querySelector('.change-grid-size-button').addEventListener('click',
  changeGridDimensions);
 
-const etched = 'etched';
-const rainbowed = 'rainbow-etched-';
-const airbrushed = 'airbrushed-pass-';
+/* Names of classes used to colorize pixels */
+const pixelMode = {
+  etched: 'etched',
+  rainbowed: 'rainbow-etched-',
+  airbrushed: 'airbrushed-pass-',
+};
 
-/* Provides button functionality to erase current sketch */
+/* Provides erase button's functionality */
 const eraseGrid = function() {
   switch(currentMode) {
     case 'classic':
-      document.querySelectorAll(`.${etched}`).forEach(etchedPixel =>
-      etchedPixel.classList.remove(`${etched}`));
+      document.querySelectorAll(`.${pixelMode.etched}`).forEach(pixel =>
+      pixel.classList.remove(`${pixelMode.etched}`));
       break;
     case 'rainbow':
       for (let i=0; i <= 5; i++) {
-        document.querySelectorAll(`.${rainbowed}${i}`).forEach(rainbowedPixel =>
-        rainbowedPixel.classList.remove(`${rainbowed}${i}`));
+        document.querySelectorAll(`.${pixelMode.rainbowed}${i}`).forEach(
+         pixel => pixel.classList.remove(`${pixelMode.rainbowed}${i}`));
       }
       break;
     case 'airbrush':
       for (let i=0; i <= 9; i++) {
-        document.querySelectorAll(`.${airbrushed}${i}`).forEach(
-         airbrushedPixel =>
-         airbrushedPixel.classList.remove(`${airbrushed}${i}`));
+        document.querySelectorAll(`.${pixelMode.airbrushed}${i}`).forEach(
+         pixel => pixel.classList.remove(`${pixelMode.airbrushed}${i}`));
       }
   }
 };
 
 document.querySelector('.erase-grid-button').addEventListener('click',
  eraseGrid);
-
-let colorCode = 0;
-
-// Cycles through classes on each new hover event to provide a rainbow effect
-function rainbowEtch() {
-  switch (colorCode) {
-    case 0 : this.classList.add(`${rainbowed}0`); //red
-    break;
-    case 1 : this.classList.add(`${rainbowed}1`); //orange
-    break;
-    case 2 : this.classList.add(`${rainbowed}2`); //yellow
-    break;
-    case 3 : this.classList.add(`${rainbowed}3`); //green
-    break;
-    case 4 : this.classList.add(`${rainbowed}4`); //blue
-    break;
-    case 5 : this.classList.add(`${rainbowed}5`); //indigo
-  }
-  colorCode ++;
-  if (colorCode > 5) colorCode = 0;
-}
-
-/* Paints the surface area in "coats", darkening the pixel further on each
-successive hover event */
-function airbrushEtch() {
-  const darkest = 9;
-  const lightest = 0;
-  if (!this.classList.contains(`${airbrushed}${lightest}`)) {
-    this.classList.add(`${airbrushed}${lightest}`);
-  } else {
-    for (let i = (darkest - 1); i >= lightest; i--) {
-      if (this.classList.contains(`${airbrushed}${i}`)) {
-        this.classList.add(`${airbrushed}${i + 1}`);
-      }
-    }
-  }
-}
