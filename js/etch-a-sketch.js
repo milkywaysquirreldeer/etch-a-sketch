@@ -1,55 +1,62 @@
-const defaultMode = 'classic';
-let currentMode = defaultMode;
+const defaultDrawMode = 'classic';
+let currentDrawMode = defaultDrawMode;
 
-const displayMode = function() {
+const displayDrawMode = function() {
   document.querySelector('.mode-info-dynamic').textContent =
-   currentMode.toUpperCase();
+   currentDrawMode.toUpperCase();
 };
 
-displayMode();
+displayDrawMode();
 
-let colorCode = 0; //rainbow mode color counter
+let rainbowColorCounter = 0;
+
+/* Names of HTML classes used to colorize "drawn" pixels */
+const pixelClass = {
+  etched: 'etched',
+  rainbowed: 'rainbow-etched-',
+  airbrushed: 'airbrushed-pass-',
+};
 
 /* Colorizes individual pixels to simulate drawing/etching. Cycles through
  background colors on each new hover event to provide an overall rainbow
  effect*/
-const rainbowEtch = function() {
-  switch (colorCode) {
-    case 0 : this.classList.add(`${pixelMode.rainbowed}0`); //red
+const applyColorRainbow = function() {
+  switch (rainbowColorCounter) {
+    case 0: this.classList.add(`${pixelClass.rainbowed}0`); //red
     break;
-    case 1 : this.classList.add(`${pixelMode.rainbowed}1`); //orange
+    case 1: this.classList.add(`${pixelClass.rainbowed}1`); //orange
     break;
-    case 2 : this.classList.add(`${pixelMode.rainbowed}2`); //yellow
+    case 2: this.classList.add(`${pixelClass.rainbowed}2`); //yellow
     break;
-    case 3 : this.classList.add(`${pixelMode.rainbowed}3`); //green
+    case 3: this.classList.add(`${pixelClass.rainbowed}3`); //green
     break;
-    case 4 : this.classList.add(`${pixelMode.rainbowed}4`); //blue
+    case 4: this.classList.add(`${pixelClass.rainbowed}4`); //blue
     break;
-    case 5 : this.classList.add(`${pixelMode.rainbowed}5`); //indigo
+    case 5: this.classList.add(`${pixelClass.rainbowed}5`); //indigo
   }
-  colorCode ++;
-  if (colorCode > 5) colorCode = 0;
+  rainbowColorCounter ++;
+  if (rainbowColorCounter > 5) rainbowColorCounter = 0;
 };
 
 /* Colorizes individual pixels to simulate drawing/etching. Adds a darker 
  background color on each successive hover event to provide an airbrushed/spray 
  paint effect*/
-const airbrushEtch = function() {
+const applyColorAirbrush = function() {
   const darkest = 9;
   const lightest = 0;
-  if (!this.classList.contains(`${pixelMode.airbrushed}${lightest}`)) {
-    this.classList.add(`${pixelMode.airbrushed}${lightest}`);
+  if (!this.classList.contains(`${pixelClass.airbrushed}${lightest}`)) {
+    this.classList.add(`${pixelClass.airbrushed}${lightest}`);
   } else {
     for (let i = (darkest - 1); i >= lightest; i--) {
-      if (this.classList.contains(`${pixelMode.airbrushed}${i}`)) {
-        this.classList.add(`${pixelMode.airbrushed}${i + 1}`);
+      if (this.classList.contains(`${pixelClass.airbrushed}${i}`)) {
+        this.classList.add(`${pixelClass.airbrushed}${i + 1}`);
       }
     }
   }
 };
 
-const enableGridPixels = function () {
-  switch(currentMode) {
+const addPixelEventListeners = function () {
+  switch(currentDrawMode) {
     case 'classic':
       document.querySelectorAll('.grid-pixel').forEach(pixel =>
        pixel.addEventListener('mouseover', () =>
@@ -57,11 +64,11 @@ const enableGridPixels = function () {
       break;
     case 'rainbow':
       document.querySelectorAll('.grid-pixel').forEach(pixel =>
-       pixel.addEventListener('mouseover', rainbowEtch));
+       pixel.addEventListener('mouseover', applyColorRainbow));
       break;
     case 'airbrush':
       document.querySelectorAll('.grid-pixel').forEach(pixel =>
-       pixel.addEventListener('mouseover', airbrushEtch));
+       pixel.addEventListener('mouseover', applyColorAirbrush));
   }
 };
 
@@ -76,20 +83,20 @@ const generateGridPixels = function(pixelCountPerSide) {
     gridPixel.style.height = `${pixelHeightWidth}vh`;
     gridPixel.style.width = `${pixelHeightWidth}vh`;
     document.querySelector('.etching-grid-surface').appendChild(gridPixel);
-    enableGridPixels();
+    addPixelEventListeners();
   }
 };
 
-const modes = ['classic', 'rainbow', 'airbrush'];
+const drawModes = ['classic', 'rainbow', 'airbrush'];
 
 const setGridFrameColor = function() {
   const gridFrame = document.querySelector('.etching-grid-surface');
   const clearGridFrame = function() {
-    for (const m of modes) {
-      gridFrame.classList.remove(`${m}-mode-grid-frame`)
+    for (const dm of drawModes) {
+      gridFrame.classList.remove(`${dm}-mode-grid-frame`)
     }
   }
-  switch(currentMode) {
+  switch(currentDrawMode) {
     case 'classic':
       clearGridFrame();
       gridFrame.classList.add('classic-mode-grid-frame'); //red frame
@@ -110,16 +117,16 @@ const defaultPixelsPerSide = 15;
 let currentPixelsPerSide = defaultPixelsPerSide;
 
 /* Set up the mode buttons' functionality */
-for (const m of modes) {
-  document.querySelector(`.${m}-mode-button`).addEventListener('click',
-   () => currentMode = `${m}`);
-  document.querySelector(`.${m}-mode-button`).addEventListener('click',
-   displayMode);
-  document.querySelector(`.${m}-mode-button`).addEventListener('click',
+for (const dm of drawModes) {
+  document.querySelector(`.${dm}-mode-button`).addEventListener('click',
+   () => currentDrawMode = `${dm}`);
+  document.querySelector(`.${dm}-mode-button`).addEventListener('click',
+   displayDrawMode);
+  document.querySelector(`.${dm}-mode-button`).addEventListener('click',
    () => generateGridPixels(currentPixelsPerSide));
-  document.querySelector(`.${m}-mode-button`).addEventListener('click',
-   () => alert(`Switching to ${m} mode; the grid will now refresh.`));
-  document.querySelector(`.${m}-mode-button`).addEventListener('click',
+  document.querySelector(`.${dm}-mode-button`).addEventListener('click',
+   () => alert(`Switching to ${dm} mode; the grid will now refresh.`));
+  document.querySelector(`.${dm}-mode-button`).addEventListener('click',
    setGridFrameColor);
 };
 
@@ -165,30 +172,23 @@ const changeGridDimensions = function () {
 document.querySelector('.change-grid-size-button').addEventListener('click',
  changeGridDimensions);
 
-/* Names of classes used to colorize pixels */
-const pixelMode = {
-  etched: 'etched',
-  rainbowed: 'rainbow-etched-',
-  airbrushed: 'airbrushed-pass-',
-};
-
 /* Provides erase button's functionality */
 const eraseGrid = function() {
-  switch(currentMode) {
+  switch(currentDrawMode) {
     case 'classic':
-      document.querySelectorAll(`.${pixelMode.etched}`).forEach(pixel =>
-      pixel.classList.remove(`${pixelMode.etched}`));
+      document.querySelectorAll(`.${pixelClass.etched}`).forEach(pixel =>
+      pixel.classList.remove(`${pixelClass.etched}`));
       break;
     case 'rainbow':
       for (let i=0; i <= 5; i++) {
-        document.querySelectorAll(`.${pixelMode.rainbowed}${i}`).forEach(
-         pixel => pixel.classList.remove(`${pixelMode.rainbowed}${i}`));
+        document.querySelectorAll(`.${pixelClass.rainbowed}${i}`).forEach(
+         pixel => pixel.classList.remove(`${pixelClass.rainbowed}${i}`));
       }
       break;
     case 'airbrush':
       for (let i=0; i <= 9; i++) {
-        document.querySelectorAll(`.${pixelMode.airbrushed}${i}`).forEach(
-         pixel => pixel.classList.remove(`${pixelMode.airbrushed}${i}`));
+        document.querySelectorAll(`.${pixelClass.airbrushed}${i}`).forEach(
+         pixel => pixel.classList.remove(`${pixelClass.airbrushed}${i}`));
       }
   }
 };
