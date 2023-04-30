@@ -2,18 +2,17 @@
   box-sizing: border-box;
 }
 
-body {
+.container {
   color: #1e232b;
+  display: flex;
+  flex-direction: column;
   font-family: Arial, Helvetica, sans-serif;
   margin: 0px;
+  min-height: 100vh;
   text-align: center;
 }
 
-ul {
-  padding-left: 15px;
-}
-
-.header {
+header {
   background-color:#feffff;
   border-bottom: 1px solid #718f03;
   color:#5a7ca3;
@@ -24,35 +23,35 @@ ul {
 }
 
 .main {
-  background-color: #a1bed5;
-  background-image: url("../img/pexels-photomix-company-97888.jpg");
   display: flex;
-  height: 90vh;
+  flex: 1;
 }
 
-.side-panel {
+.content-panel {
+  background-color: #a1bed5;
+  background-image: url("../img/pexels-photomix-company-97888.jpg");
+  flex: 1;
+  order: 2;
+}
+
+aside {
   background-color: #f5f8f7;
-  width: 20vw;
+  flex: 0 0 20vw;
 }
 
 .left-panel {
   border-right: 1px solid #595957;
+  order: 1;
 }
 
 .right-panel {
   border-left: 1px solid #595957;
+  order: 3;
 }
 
 .side-container {
-  margin: 7vh 2vw;
   font-size: 18px;
-}
-
-.current-settings {
-  background-color: #bada17;
-  border: 2px solid #598400;
-  font-family: 'Courier New', Courier, monospace;
-  font-weight: bold;
+  margin: 7vh 2vw;
 }
 
 .instructions {
@@ -67,6 +66,17 @@ ul {
   box-shadow: 6px 6px 5px#587ba3;
   color:black;
   transform: scale(1.07, 1.07);
+}
+
+.instructions > ul {
+  padding-left: 15px;
+}
+
+.current-settings {
+  background-color: #bada17;
+  border: 2px solid #598400;
+  font-family: 'Courier New', Courier, monospace;
+  font-weight: bold;
 }
 
 .info-dynamic {
@@ -205,4 +215,9 @@ button:active {
 
 .airbrushed-pass-9 {
   background-color: #000000;
+}
+
+footer {
+  border-top: 1px solid #718f03;
+  height: 5vh;
 }

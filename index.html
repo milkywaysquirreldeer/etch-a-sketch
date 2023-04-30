@@ -5,11 +5,14 @@
     <title>JavaScript Etch-a-Sketch</title>
     <link rel="stylesheet" href="css/style.css">
   </head>
-  <body>
+  <body class="container">
     <script src="js/etch-a-sketch.js" defer></script>
-    <div class="header">Digital Etch-a-Sketch</div>
+    <header>Digital Etch-a-Sketch</header>
     <div class="main">
-      <div class="side-panel left-panel">
+      <main class="content-panel">
+        <div class="etching-grid-surface"></div>
+      </main>
+      <aside class="left-panel">
         <div class="side-container instructions">
           <p><strong>How to use:</strong></p>
           <p>Hover your mouse over the squares in the grid to draw along a continuous path, much like a classic Etch-a-Sketch.</p>
@@ -22,9 +25,8 @@
           </p>
           <p>Primary technologies demonstrated: JavaScript DOM Manipulation, Flexbox.</p>
         </div>
-      </div>
-    <div class="etching-grid-surface"></div>
-    <div class="side-panel right-panel">
+      </aside>
+      <aside class="right-panel">
       <div class="side-container current-settings">--Current settings--
         <div class="current-grid-size-display"></div>
         <div class="info info-static grid-info-static">Grid resolution is</div>
@@ -39,6 +41,8 @@
         <button class="rainbow-mode-button">Rainbow mode</button>
         <button class="airbrush-mode-button">Airbrush mode</button>
       </div>
+      </aside>
     </div>
+  <footer>...</footer>
   </body>
 </html>
