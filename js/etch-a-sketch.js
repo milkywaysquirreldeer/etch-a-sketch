@@ -55,26 +55,42 @@ const applyColorAirbrush = function() {
   }
 };
 
-const addPixelEventListeners = function () {
+const addPixelEventListeners = function() {
   switch(currentDrawMode) {
     case 'classic':
-      document.querySelectorAll('.grid-pixel').forEach(pixel =>
-       pixel.addEventListener('mouseover', () =>
-       pixel.classList.add('etched')));
+      document.querySelectorAll('.grid-pixel').forEach(
+        function(pixel) {
+          pixel.addEventListener('mouseover',
+            function() {
+              pixel.classList.add('etched');
+            }
+          );
+        }
+      );
       break;
     case 'rainbow':
-      document.querySelectorAll('.grid-pixel').forEach(pixel =>
-       pixel.addEventListener('mouseover', applyColorRainbow));
+      document.querySelectorAll('.grid-pixel').forEach(
+        function(pixel) {
+          pixel.addEventListener('mouseover', applyColorRainbow);
+        }
+      );
       break;
     case 'airbrush':
-      document.querySelectorAll('.grid-pixel').forEach(pixel =>
-       pixel.addEventListener('mouseover', applyColorAirbrush));
+      document.querySelectorAll('.grid-pixel').forEach(
+        function(pixel) {
+          pixel.addEventListener('mouseover', applyColorAirbrush);
+        }
+      );
   }
 };
 
 /* Wipe current board and redraw pixels to user-specified dimensions */
 const generateGridPixels = function(pixelCountPerSide) {
-  document.querySelectorAll('.grid-pixel').forEach(pixel => pixel.remove());
+  document.querySelectorAll('.grid-pixel').forEach(
+    function(pixel) {
+      pixel.remove();
+    }
+  );
   const gridSurfaceVhPercent = 70;
   const pixelHeightWidth = gridSurfaceVhPercent/pixelCountPerSide;
   for (let i=1; i<=(pixelCountPerSide**2); i++) {
@@ -119,13 +135,22 @@ let currentPixelsPerSide = defaultPixelsPerSide;
 /* Set up the mode buttons' functionality */
 for (const dm of drawModes) {
   document.querySelector(`.${dm}-mode-button`).addEventListener('click',
-   () => currentDrawMode = `${dm}`);
+    function() {
+      currentDrawMode = `${dm}`;
+    }
+  );
   document.querySelector(`.${dm}-mode-button`).addEventListener('click',
    displayDrawMode);
   document.querySelector(`.${dm}-mode-button`).addEventListener('click',
-   () => generateGridPixels(currentPixelsPerSide));
+    function() {
+      generateGridPixels(currentPixelsPerSide);
+    }
+  );
   document.querySelector(`.${dm}-mode-button`).addEventListener('click',
-   () => alert(`Switching to ${dm} mode; the grid will now refresh.`));
+    function() {
+      alert(`Switching to ${dm} mode; the grid will now refresh.`);
+    }
+  );
   document.querySelector(`.${dm}-mode-button`).addEventListener('click',
    setGridFrameColor);
 };
@@ -141,7 +166,7 @@ const displayGridDimensions = function() {
 displayGridDimensions();
 
 /* Set up the "Change grid resolution" button's functionality */
-const changeGridDimensions = function () {
+const changeGridDimensions = function() {
   const minExpected = 2;
   const maxExpected = 30;
   const expectedValues = [];
@@ -176,19 +201,28 @@ document.querySelector('.change-grid-size-button').addEventListener('click',
 const eraseGrid = function() {
   switch(currentDrawMode) {
     case 'classic':
-      document.querySelectorAll(`.${pixelClass.etched}`).forEach(pixel =>
-      pixel.classList.remove(`${pixelClass.etched}`));
+      document.querySelectorAll(`.${pixelClass.etched}`).forEach(
+        function(pixel) {
+          pixel.classList.remove(`${pixelClass.etched}`);
+        }
+      );
       break;
     case 'rainbow':
       for (let i=0; i <= 5; i++) {
         document.querySelectorAll(`.${pixelClass.rainbowed}${i}`).forEach(
-         pixel => pixel.classList.remove(`${pixelClass.rainbowed}${i}`));
+          function(pixel) {
+            pixel.classList.remove(`${pixelClass.rainbowed}${i}`);
+          }
+        );
       }
       break;
     case 'airbrush':
       for (let i=0; i <= 9; i++) {
         document.querySelectorAll(`.${pixelClass.airbrushed}${i}`).forEach(
-         pixel => pixel.classList.remove(`${pixelClass.airbrushed}${i}`));
+          function(pixel) {
+            pixel.classList.remove(`${pixelClass.airbrushed}${i}`);
+          }
+        );
       }
   }
 };
