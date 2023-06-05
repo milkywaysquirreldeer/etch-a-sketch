@@ -1,9 +1,24 @@
-const defaultDrawMode = 'classic';
-let currentDrawMode = defaultDrawMode;
+const grid = {
+  drawMode: {
+    current: undefined,
+    default: 'classic',
+    names: [
+      'classic',
+      'rainbow',
+      'airbrush',
+    ],
+  },
+  pixelsPerSide: {
+    current: undefined,
+    default: 15,
+  },
+};
+
+grid.drawMode.current = grid.drawMode.default;
 
 const displayDrawMode = function() {
   document.querySelector('.mode-info-dynamic').textContent =
-   currentDrawMode.toUpperCase();
+   grid.drawMode.current.toUpperCase();
 };
 
 displayDrawMode();
@@ -39,8 +54,8 @@ const applyColorRainbow = function() {
 };
 
 /* Colorizes individual pixels to simulate drawing/etching. Adds a darker 
- background color on each successive hover event to provide an airbrushed/spray 
- paint effect*/
+ background color on each successive hover event to provide an airbrushed /
+ spray paint effect*/
 const applyColorAirbrush = function() {
   const darkest = 9;
   const lightest = 0;
@@ -56,7 +71,7 @@ const applyColorAirbrush = function() {
 };
 
 const addPixelEventListeners = function() {
-  switch(currentDrawMode) {
+  switch(grid.drawMode.current) {
     case 'classic':
       document.querySelectorAll('.grid-pixel').forEach(
         function(pixel) {
@@ -103,16 +118,14 @@ const generateGridPixels = function(pixelCountPerSide) {
   }
 };
 
-const drawModes = ['classic', 'rainbow', 'airbrush'];
-
 const setGridFrameColor = function() {
   const gridFrame = document.querySelector('.etching-grid-surface');
   const clearGridFrame = function() {
-    for (const dm of drawModes) {
+    for (const dm of grid.drawMode.names) {
       gridFrame.classList.remove(`${dm}-mode-grid-frame`)
     }
   }
-  switch(currentDrawMode) {
+  switch(grid.drawMode.current) {
     case 'classic':
       clearGridFrame();
       gridFrame.classList.add('classic-mode-grid-frame'); //red frame
@@ -129,21 +142,20 @@ const setGridFrameColor = function() {
 
 setGridFrameColor();
 
-const defaultPixelsPerSide = 15;
-let currentPixelsPerSide = defaultPixelsPerSide;
+grid.pixelsPerSide.current = grid.pixelsPerSide.default;
 
 /* Set up the mode buttons' functionality */
-for (const dm of drawModes) {
+for (const dm of grid.drawMode.names) {
   document.querySelector(`.${dm}-mode-button`).addEventListener('click',
     function() {
-      currentDrawMode = `${dm}`;
+      grid.drawMode.current = `${dm}`;
     }
   );
   document.querySelector(`.${dm}-mode-button`).addEventListener('click',
    displayDrawMode);
   document.querySelector(`.${dm}-mode-button`).addEventListener('click',
     function() {
-      generateGridPixels(currentPixelsPerSide);
+      generateGridPixels(grid.pixelsPerSide.current);
     }
   );
   document.querySelector(`.${dm}-mode-button`).addEventListener('click',
@@ -155,12 +167,13 @@ for (const dm of drawModes) {
    setGridFrameColor);
 };
 
-generateGridPixels(defaultPixelsPerSide);
+generateGridPixels(grid.pixelsPerSide.default);
 
 const displayGridDimensions = function() {
-  const totalPixels = (currentPixelsPerSide ** 2);
+  const totalPixels = (grid.pixelsPerSide.current ** 2);
   document.querySelector('.grid-info-dynamic').textContent =
-   `${currentPixelsPerSide} x ${currentPixelsPerSide} (${totalPixels} squares)`;
+   `${grid.pixelsPerSide.current} x ${grid.pixelsPerSide.current} ` +
+   `(${totalPixels} squares)`;
 };
 
 displayGridDimensions();
@@ -174,9 +187,9 @@ const changeGridDimensions = function() {
     expectedValues.push(i);
   }
   const userPixelsPerSide = parseFloat(prompt(`Change the grid resolution? ` +
-   `There are currently ${currentPixelsPerSide} drawing squares per side ` +
-   `(higher values will take longer to load). Valid range is ${minExpected}` +
-   `- ${maxExpected}.`, currentPixelsPerSide));
+   `There are currently ${grid.pixelsPerSide.current} drawing squares per ` +
+   ` side (higher values will take longer to load). Valid range is ` +
+   `${minExpected} - ${maxExpected}.`, grid.pixelsPerSide.current));
   switch(true) {
     case (userPixelsPerSide == null) : return;
     case (!expectedValues.includes(userPixelsPerSide)) : {
@@ -187,8 +200,8 @@ const changeGridDimensions = function() {
     case (userPixelsPerSide >= 25) : alert(`This would be one of those ` +
      `higher values that can take longer to load! Refreshing the grid.`)
     default : {
-      currentPixelsPerSide = userPixelsPerSide;
-      generateGridPixels(currentPixelsPerSide);
+      grid.pixelsPerSide.current = userPixelsPerSide;
+      generateGridPixels(grid.pixelsPerSide.current);
       displayGridDimensions();
     }
   }
@@ -199,7 +212,7 @@ document.querySelector('.change-grid-size-button').addEventListener('click',
 
 /* Provides erase button's functionality */
 const eraseGrid = function() {
-  switch(currentDrawMode) {
+  switch(grid.drawMode.current) {
     case 'classic':
       document.querySelectorAll(`.${pixelClass.etched}`).forEach(
         function(pixel) {
