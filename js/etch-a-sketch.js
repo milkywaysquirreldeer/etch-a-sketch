@@ -23,31 +23,64 @@ const displayDrawMode = function() {
 
 displayDrawMode();
 
-let rainbowColorCounter = 0;
+grid.pixelsPerSide.current = grid.pixelsPerSide.default;
 
-/* Names of HTML classes used to colorize "drawn" pixels */
-const pixelClass = {
-  etched: 'etched',
-  rainbowed: 'rainbow-etched-',
-  airbrushed: 'airbrushed-pass-',
+const displayGridDimensions = function() {
+  const totalPixels = (grid.pixelsPerSide.current ** 2);
+  document.querySelector('.grid-info-dynamic').textContent =
+   `${grid.pixelsPerSide.current} x ${grid.pixelsPerSide.current} ` +
+   `(${totalPixels} squares)`;
 };
+
+displayGridDimensions();
+
+const setGridFrameColor = function() {
+  const gridFrame = document.querySelector('.etching-grid-surface');
+  const clearGridFrame = function() {
+    for (const dm of grid.drawMode.names) {
+      gridFrame.classList.remove(`${dm}-mode-grid-frame`)
+    }
+  }
+  switch(grid.drawMode.current) {
+    case 'classic':
+      clearGridFrame();
+      gridFrame.classList.add('classic-mode-grid-frame'); //red frame
+      break;
+    case 'rainbow':
+      clearGridFrame();
+      gridFrame.classList.add('rainbow-mode-grid-frame'); //blue frame
+      break;
+    case 'airbrush':
+      clearGridFrame();
+      gridFrame.classList.add('airbrush-mode-grid-frame'); //black frame
+  }
+};
+
+setGridFrameColor();
+
+// Names of HTML classes used to colorize "drawn" pixels
+const etched = 'etched';
+const rainbowColored = 'rainbow-colored-';
+const airbrushed = 'airbrushed-pass-';
+
+let rainbowColorCounter = 0;
 
 /* Colorizes individual pixels to simulate drawing/etching. Cycles through
  background colors on each new hover event to provide an overall rainbow
  effect*/
-const applyColorRainbow = function() {
+ const applyColorRainbow = function() {
   switch (rainbowColorCounter) {
-    case 0: this.classList.add(`${pixelClass.rainbowed}0`); //red
+    case 0: this.classList.add(`${rainbowColored}0`); //red
     break;
-    case 1: this.classList.add(`${pixelClass.rainbowed}1`); //orange
+    case 1: this.classList.add(`${rainbowColored}1`); //orange
     break;
-    case 2: this.classList.add(`${pixelClass.rainbowed}2`); //yellow
+    case 2: this.classList.add(`${rainbowColored}2`); //yellow
     break;
-    case 3: this.classList.add(`${pixelClass.rainbowed}3`); //green
+    case 3: this.classList.add(`${rainbowColored}3`); //green
     break;
-    case 4: this.classList.add(`${pixelClass.rainbowed}4`); //blue
+    case 4: this.classList.add(`${rainbowColored}4`); //blue
     break;
-    case 5: this.classList.add(`${pixelClass.rainbowed}5`); //indigo
+    case 5: this.classList.add(`${rainbowColored}5`); //indigo
   }
   rainbowColorCounter ++;
   if (rainbowColorCounter > 5) rainbowColorCounter = 0;
@@ -59,21 +92,22 @@ const applyColorRainbow = function() {
 const applyColorAirbrush = function() {
   const darkest = 9;
   const lightest = 0;
-  if (!this.classList.contains(`${pixelClass.airbrushed}${lightest}`)) {
-    this.classList.add(`${pixelClass.airbrushed}${lightest}`);
+  if (!this.classList.contains(`${airbrushed}${lightest}`)) {
+    this.classList.add(`${airbrushed}${lightest}`);
   } else {
     for (let i = (darkest - 1); i >= lightest; i--) {
-      if (this.classList.contains(`${pixelClass.airbrushed}${i}`)) {
-        this.classList.add(`${pixelClass.airbrushed}${i + 1}`);
+      if (this.classList.contains(`${airbrushed}${i}`)) {
+        this.classList.add(`${airbrushed}${i + 1}`);
       }
     }
   }
 };
 
 const addPixelEventListeners = function() {
+  const pixelElements = document.querySelectorAll('.grid-pixel');
   switch(grid.drawMode.current) {
     case 'classic':
-      document.querySelectorAll('.grid-pixel').forEach(
+      pixelElements.forEach(
         function(pixel) {
           pixel.addEventListener('mouseover',
             function() {
@@ -84,14 +118,14 @@ const addPixelEventListeners = function() {
       );
       break;
     case 'rainbow':
-      document.querySelectorAll('.grid-pixel').forEach(
+      pixelElements.forEach(
         function(pixel) {
           pixel.addEventListener('mouseover', applyColorRainbow);
         }
       );
       break;
     case 'airbrush':
-      document.querySelectorAll('.grid-pixel').forEach(
+      pixelElements.forEach(
         function(pixel) {
           pixel.addEventListener('mouseover', applyColorAirbrush);
         }
@@ -118,67 +152,30 @@ const generateGridPixels = function(pixelCountPerSide) {
   }
 };
 
-const setGridFrameColor = function() {
-  const gridFrame = document.querySelector('.etching-grid-surface');
-  const clearGridFrame = function() {
-    for (const dm of grid.drawMode.names) {
-      gridFrame.classList.remove(`${dm}-mode-grid-frame`)
-    }
-  }
-  switch(grid.drawMode.current) {
-    case 'classic':
-      clearGridFrame();
-      gridFrame.classList.add('classic-mode-grid-frame'); //red frame
-      break;
-    case 'rainbow':
-      clearGridFrame();
-      gridFrame.classList.add('rainbow-mode-grid-frame'); //blue frame
-      break;
-    case 'airbrush':
-      clearGridFrame();
-      gridFrame.classList.add('airbrush-mode-grid-frame'); //black frame
-  }
-};
+generateGridPixels(grid.pixelsPerSide.default);
 
-setGridFrameColor();
-
-grid.pixelsPerSide.current = grid.pixelsPerSide.default;
-
-/* Set up the mode buttons' functionality */
+// Set up the draw mode buttons' functionality
 for (const dm of grid.drawMode.names) {
-  document.querySelector(`.${dm}-mode-button`).addEventListener('click',
+  const drawModeButtonElement = document.querySelector(`.${dm}-mode-button`);
+  drawModeButtonElement.addEventListener('click',
     function() {
       grid.drawMode.current = `${dm}`;
     }
   );
-  document.querySelector(`.${dm}-mode-button`).addEventListener('click',
-   displayDrawMode);
-  document.querySelector(`.${dm}-mode-button`).addEventListener('click',
+  drawModeButtonElement.addEventListener('click', displayDrawMode);
+  drawModeButtonElement.addEventListener('click',
     function() {
       generateGridPixels(grid.pixelsPerSide.current);
     }
   );
-  document.querySelector(`.${dm}-mode-button`).addEventListener('click',
+  drawModeButtonElement.addEventListener('click',
     function() {
       alert(`Switching to ${dm} mode; the grid will now refresh.`);
     }
   );
-  document.querySelector(`.${dm}-mode-button`).addEventListener('click',
-   setGridFrameColor);
+  drawModeButtonElement.addEventListener('click', setGridFrameColor);
 };
 
-generateGridPixels(grid.pixelsPerSide.default);
-
-const displayGridDimensions = function() {
-  const totalPixels = (grid.pixelsPerSide.current ** 2);
-  document.querySelector('.grid-info-dynamic').textContent =
-   `${grid.pixelsPerSide.current} x ${grid.pixelsPerSide.current} ` +
-   `(${totalPixels} squares)`;
-};
-
-displayGridDimensions();
-
-/* Set up the "Change grid resolution" button's functionality */
 const changeGridDimensions = function() {
   const minExpected = 2;
   const maxExpected = 30;
@@ -207,38 +204,39 @@ const changeGridDimensions = function() {
   }
 };
 
+// Sets up the "Change grid resolution" button's functionality
 document.querySelector('.change-grid-size-button').addEventListener('click',
  changeGridDimensions);
 
-/* Provides erase button's functionality */
 const eraseGrid = function() {
   switch(grid.drawMode.current) {
     case 'classic':
-      document.querySelectorAll(`.${pixelClass.etched}`).forEach(
+      document.querySelectorAll(`.${etched}`).forEach(
         function(pixel) {
-          pixel.classList.remove(`${pixelClass.etched}`);
+          pixel.classList.remove(`${etched}`);
         }
       );
       break;
     case 'rainbow':
       for (let i=0; i <= 5; i++) {
-        document.querySelectorAll(`.${pixelClass.rainbowed}${i}`).forEach(
+        document.querySelectorAll(`.${rainbowColored}${i}`).forEach(
           function(pixel) {
-            pixel.classList.remove(`${pixelClass.rainbowed}${i}`);
+            pixel.classList.remove(`${rainbowColored}${i}`);
           }
         );
       }
       break;
     case 'airbrush':
       for (let i=0; i <= 9; i++) {
-        document.querySelectorAll(`.${pixelClass.airbrushed}${i}`).forEach(
+        document.querySelectorAll(`.${airbrushed}${i}`).forEach(
           function(pixel) {
-            pixel.classList.remove(`${pixelClass.airbrushed}${i}`);
+            pixel.classList.remove(`${airbrushed}${i}`);
           }
         );
       }
   }
 };
 
+// Sets up the Erase button's functionality */
 document.querySelector('.erase-grid-button').addEventListener('click',
  eraseGrid);
