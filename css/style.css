@@ -217,7 +217,7 @@ button:active {
 }
 
 footer {
-  align-items: center; 
+  align-items: center;
   border-top: 1px solid #718f03;
   display: flex;
   flex-shrink: 0;
